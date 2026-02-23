@@ -1,16 +1,15 @@
 name: continuous-integration
 on:
-	push:
-		branches:
-			- main
+    push:
+        branches:
+            - main
 
 jobs:
-	lint-and-jest:
-
-	    runs-on: ubuntu-latest
-	    name: lint-and-jest
-	    steps:
-		    - uses: actions/checkout@v3
-		    - uses: bahmutov/npm-install@v1
-		    - run: npm run lint (Run ESLint)
-		    - run: npm run test (Run Jest)
+    test:
+        runs-on: ubuntu-latest
+        name: lint-and-jest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: bahmutov/npm-install@v1
+            - run: npm run lint
+            - run: npm run test
