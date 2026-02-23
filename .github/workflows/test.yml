@@ -22,6 +22,6 @@ lint-and-jest:
 
     - uses: bahmutov/npm-install@v1
 
-    - run: npm run ESLint (Run ESLint)
+    - run: npm run lint (Run ESLint)
 
     - run: npm run test (Run Jest)
