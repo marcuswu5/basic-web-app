@@ -29,10 +29,13 @@ export default function QueryProcessor(query: string): string {
   }
 
   if (query.toLowerCase().includes("plus")) {
-	  let index = query.indexOf("plus");
-	  let n1 = parseInt(query.substring(0,index), 10);
-	  let n2 = parseInt(query.slice(index),10);
-	  return (n1 + n2).toString();
+    // Match format: "num plus num" (e.g., "5 plus 7")
+    const match = query.match(/(-?\d+)\s*plus\s*(-?\d+)/i);
+    if (match) {
+      const n1 = parseInt(match[1], 10);
+      const n2 = parseInt(match[2], 10);
+      return (n1 + n2).toString();
+    }
   }
 
   if (query.toLowerCase().includes("minus")) {
@@ -49,7 +52,25 @@ export default function QueryProcessor(query: string): string {
 	  return (n1 * n2).toString();
   }
 
+  if (query.toLowerCase().includes("primes")) {
+    let index = query.indexOf("primes");
+    let s = query.slice(index);
+    let numbers: number[] = [];
+    for (let i = 0; i < 5; i++) {
+      let j = s.indexOf(",");
+      let a = s.substring(0,j);
+      numbers.push(parseInt(a, 10));
+      s = s.slice(j);
+    }
+    return numbers.filter(isPrime).join(", ");
+  }
+  function isPrime(n: number): boolean {
+    if (n <= 1) return false;
+    for (let i = 2; i * i <= n; i++) {
+      if (n % i === 0) return false;
+    }
+    return true;
+  }
   
-
   return "";
 }
