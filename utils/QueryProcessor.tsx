@@ -21,11 +21,18 @@ export default function QueryProcessor(query: string): string {
 	  let numbers: number[] = [];
 	  for (let i = 0; i < 3; i++) {
 		  let j = query.indexOf(",");
-		  let a = n.substring(0,j);
+		  let a = s.substring(0,j);
 		  numbers.push(parseInt(i1, n));
 		  s = s.slice(j);
 	  }
 	  return numbers.reduce((a, b) => Math.max(a, b), -Infinity);
+  }
+
+  if (query.toLowerCase().includes("plus") {
+	  let index = query.indexOf("plus");
+	  let n1 = parseInt(query.substring(0,index), 10);
+	  let n2 = parseInt(query.slice(index),10);
+	  return n1 + n2;
   }
 
   return "";
