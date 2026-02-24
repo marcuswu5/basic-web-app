@@ -22,7 +22,7 @@ export default function QueryProcessor(query: string): string {
 	  for (let i = 0; i < 3; i++) {
 		  let j = query.indexOf(",");
 		  let a = s.substring(0,j);
-		  numbers.push(parseInt(i1, n));
+		  numbers.push(parseInt(a, 10));
 		  s = s.slice(j);
 	  }
 	  return numbers.reduce((a, b) => Math.max(a, b), -Infinity);
