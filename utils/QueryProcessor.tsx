@@ -131,6 +131,17 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  // "Which of the following is an anagram of <word>: opt1, opt2, opt3?"
+  const anagramMatch = query.match(/which of the following is an anagram of\s+(\w+)\s*:\s*(.+?)\s*\?/i);
+  if (anagramMatch) {
+    const targetWord = anagramMatch[1].trim().toLowerCase();
+    const optionsStr = anagramMatch[2].trim();
+    const options = optionsStr.split(/\s*,\s*/).map(s => s.trim());
+    const targetKey = [...targetWord].sort().join("");
+    const anagrams = options.filter(opt => [...opt.toLowerCase()].sort().join("") === targetKey);
+    return anagrams.length > 0 ? anagrams.join(", ") : "";
+  }
+
   function isPrime(n: number): boolean {
     if (n <= 1) return false;
     for (let i = 2; i * i <= n; i++) {
