@@ -39,31 +39,35 @@ export default function QueryProcessor(query: string): string {
   }
 
   if (query.toLowerCase().includes("minus")) {
-	  let index = query.indexOf("minus");
-	  let n1 = parseInt(query.substring(0,index), 10);
-	  let n2 = parseInt(query.slice(index),10);
-	  return (n1 - n2).toString();
+    // Match format: "num minus num" (e.g., "10 minus 4")
+    const match = query.match(/(-?\d+)\s*minus\s*(-?\d+)/i);
+    if (match) {
+      const n1 = parseInt(match[1], 10);
+      const n2 = parseInt(match[2], 10);
+      return (n1 - n2).toString();
+    }
   }
 
   if (query.toLowerCase().includes("multiplied")) {
-	  let index = query.indexOf("multiplied");
-	  let n1 = parseInt(query.substring(0,index), 10);
-	  let n2 = parseInt(query.slice(index),10);
-	  return (n1 * n2).toString();
+    // Match format: "num multiplied by num" (e.g., "8 multiplied by 2")
+    const match = query.match(/(-?\d+)\s*multiplied\s*by\s*(-?\d+)/i);
+    if (match) {
+      const n1 = parseInt(match[1], 10);
+      const n2 = parseInt(match[2], 10);
+      return (n1 * n2).toString();
+    }
   }
 
   if (query.toLowerCase().includes("primes")) {
-    let index = query.indexOf("primes");
-    let s = query.slice(index);
-    let numbers: number[] = [];
-    for (let i = 0; i < 5; i++) {
-      let j = s.indexOf(",");
-      let a = s.substring(0,j);
-      numbers.push(parseInt(a, 10));
-      s = s.slice(j);
+    // Assume the format is: "primes: n1, n2, n3, ..."
+    const afterColonIndex = query.indexOf(":");
+    if (afterColonIndex !== -1) {
+      const numListPart = query.slice(afterColonIndex + 1);
+      const numbers = numListPart.split(",").map(str => parseInt(str.trim(), 10)).filter(n => !isNaN(n));
+      return numbers.filter(isPrime).join(", ");
     }
-    return numbers.filter(isPrime).join(", ");
   }
+
   function isPrime(n: number): boolean {
     if (n <= 1) return false;
     for (let i = 2; i * i <= n; i++) {
@@ -71,6 +75,6 @@ export default function QueryProcessor(query: string): string {
     }
     return true;
   }
-  
+
   return "";
 }
