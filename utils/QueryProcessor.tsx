@@ -18,7 +18,7 @@ export default function QueryProcessor(query: string): string {
   if (query.toLowerCase().includes("what is")) {
     // Parse expressions like "what is 5 plus 3 multiplied by 2 minus 4"
     // Supports: plus, minus, multiplied by, power, divided by
-    const operators = {
+    const operators: Record<string, string> = {
       "plus": "+",
       "minus": "-",
       "multiplied by": "*",
