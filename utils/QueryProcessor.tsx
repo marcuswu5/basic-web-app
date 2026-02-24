@@ -15,6 +15,59 @@ export default function QueryProcessor(query: string): string {
 	return ("marcusw");
   }
 
+  if (query.toLowerCase().includes("what is")) {
+    // Parse expressions like "what is 5 plus 3 multiplied by 2 minus 4"
+    // Supports: plus, minus, multiplied by, power, divided by
+    const operators = {
+      "plus": "+",
+      "minus": "-",
+      "multiplied by": "*",
+      "times": "*",
+      "power": "**",
+      "divided by": "/"
+    };
+
+    // Remove "what is" prefix and trim.
+    const exprContent = query.replace(/^what is\s*/i, '').replace(/\?$/, '').trim();
+
+    // Tokenize: match negative and positive numbers, and multi-word operators.
+    const tokenPattern = /(-?\d+)|(multiplied by|divided by|power|plus|minus|times)/gi;
+    const tokens: string[] = [];
+    let m: RegExpExecArray | null;
+    while ((m = tokenPattern.exec(exprContent)) !== null) {
+      tokens.push(m[0].toLowerCase());
+    }
+
+    if (tokens.length === 0) {
+      return "I cannot parse that expression.";
+    }
+    
+    // Convert tokens to an evaluatable string.
+    let evalExpr = "";
+    for (let i = 0; i < tokens.length; i++) {
+      let t = tokens[i];
+      if (operators[t]) {
+        evalExpr += ` ${operators[t]} `;
+      } else if (!isNaN(Number(t))) {
+        evalExpr += t;
+      } else {
+        return "I cannot parse that expression.";
+      }
+    }
+
+    // Evaluate expression safely
+    try {
+      // eslint-disable-next-line no-eval
+      // Math.pow only for "**" support in older JS, otherwise eval suffices for simple expr
+      // but since we're just handling numbers and the allowed operators, eval is acceptable here
+      // For extra safety, can replace "**" with Math.pow
+      const result = Function('"use strict";return (' + evalExpr + ')')();
+      return result.toString();
+    } catch (e) {
+      return "Error evaluating expression.";
+    }
+  }
+
   if (query.toLowerCase().includes("largest")) {
 	  let nums = query.indexOf(":");
 	  let s = query.slice(nums + 1);
