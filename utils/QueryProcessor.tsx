@@ -35,5 +35,21 @@ export default function QueryProcessor(query: string): string {
 	  return (n1 + n2).toString();
   }
 
+  if (query.toLowerCase().includes("minus")) {
+	  let index = query.indexOf("minus");
+	  let n1 = parseInt(query.substring(0,index), 10);
+	  let n2 = parseInt(query.slice(index),10);
+	  return (n1 - n2).toString();
+  }
+
+  if (query.toLowerCase().includes("multiplied")) {
+	  let index = query.indexOf("multiplied");
+	  let n1 = parseInt(query.substring(0,index), 10);
+	  let n2 = parseInt(query.slice(index),10);
+	  return (n1 * n2).toString();
+  }
+
+  
+
   return "";
 }
