@@ -58,6 +58,16 @@ export default function QueryProcessor(query: string): string {
     }
   }
 
+  if (query.toLowerCase().includes("power")) {
+    // Match format: "num power num" (e.g., "2 power 3")
+    const match = query.match(/(-?\d+)\s*power\s*(-?\d+)/i);
+    if (match) {
+      const n1 = parseInt(match[1], 10);
+      const n2 = parseInt(match[2], 10);
+      return (n1 ** n2).toString();
+    }
+  }
+
   if (query.toLowerCase().includes("primes")) {
     // Assume the format is: "primes: n1, n2, n3, ..."
     const afterColonIndex = query.indexOf(":");
