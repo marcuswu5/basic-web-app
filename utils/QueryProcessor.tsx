@@ -28,7 +28,7 @@ export default function QueryProcessor(query: string): string {
 	  return numbers.reduce((a, b) => Math.max(a, b), -Infinity);
   }
 
-  if (query.toLowerCase().includes("plus") {
+  if (query.toLowerCase().includes("plus")) {
 	  let index = query.indexOf("plus");
 	  let n1 = parseInt(query.substring(0,index), 10);
 	  let n2 = parseInt(query.slice(index),10);
